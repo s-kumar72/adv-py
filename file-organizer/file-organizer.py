@@ -45,28 +45,32 @@ list_ = os.listdir(path)
 for file_ in list_:
 
     ##START CODING HERE
-
     # 1. Create variables name and ext and set them to the file_'s name and extention
     file_list = file_.split(".")
     name = file_list[0]
-    ext = file_list[1]
+    ext = "." + file_list[1]
     #Checks if there is no extension
     #If the extension variable is empty, moves onto the next iteration
     if ext == '':
         continue
 
     # 2. Loop through DIRECTORIES
-
+    for key in DIRECTORIES:
         # 3. If the extension is in one of the lists
-
+        if ext in key:
             # 4. Check if the key is a folder in the current directory already
-
+            new_path = os.path.join(path, key)
+            if os.path.exists(new_path) == True:
                 # 5. If the key is already a folder in the directory,
+                shutil.move(file_, new_path)
                 # move the file into that directory using shutil.move
 
             # 6. If the folder is not in the current directory already,
             # create the folder
-
+            if os.path.exists(new_path) == False:
+                new_dir2 = os.listdir(path + key)
                 # 7. Move the file into that directory using shutil.move
-
+                shutil.move(file_, new_dir2)
         # 8. Else, continue to the next iteration
+        else:
+            continue
