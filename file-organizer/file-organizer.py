@@ -1,6 +1,7 @@
 import os
 import shutil
 
+os.chdir('//Users//sadhanakumar//github//adv-py//file-organizer//test-file')
 ## File Organizer
 ##  def include( )
 ##  Advanced Concepts in Python
@@ -11,7 +12,7 @@ DIRECTORIES = {
     "Web": [".html5", ".html", ".htm", ".xhtml", ".css", ".webarchive", ".php",
             ".yaml"],
     "Images": [".jpeg", ".jpg", ".tiff", ".gif", ".bmp", ".png", ".bpg", "svg",
-               ".heif", ".jfif"],
+               ".heif", ".jfif", ".svg"],
     "Photoshop": [".psd"],
     "Videos": [".avi", ".flv", ".wmv", ".mov", ".mp4", ".webm", ".vob", ".mng",
                ".qt", ".mpg", ".mpeg", ".3gp"],
@@ -46,31 +47,31 @@ for file_ in list_:
 
     ##START CODING HERE
     # 1. Create variables name and ext and set them to the file_'s name and extention
+    #If the extension variable is empty, moves onto the next iteration
+    #Checks if there is no extension
     file_list = file_.split(".")
     name = file_list[0]
-    ext = "." + file_list[1]
-    #Checks if there is no extension
-    #If the extension variable is empty, moves onto the next iteration
-    if ext == '':
-        continue
+    if len(file_list) > 1:
+        ext = "." + file_list[1]
 
-    # 2. Loop through DIRECTORIES
-    for key in DIRECTORIES:
-        # 3. If the extension is in one of the lists
-        if ext in key:
-            # 4. Check if the key is a folder in the current directory already
-            new_path = os.path.join(path, key)
-            if os.path.exists(new_path) == True:
-                # 5. If the key is already a folder in the directory,
-                shutil.move(file_, new_path)
-                # move the file into that directory using shutil.move
+        # 2. Loop through DIRECTORIES
+        for key in DIRECTORIES:
+            # 3. If the extension is in one of the lists
+            if ext in DIRECTORIES[key]:
+                # 4. Check if the key is a folder in the current directory already
+                new_path = os.path.join(path, key)
+                if os.path.exists(new_path):
+                    # 5. If the key is already a folder in the directory,
+                    shutil.move(os.path.join(path, file_), new_path)
+                    # move the file into that directory using shutil.move
 
-            # 6. If the folder is not in the current directory already,
-            # create the folder
-            if os.path.exists(new_path) == False:
-                new_dir2 = os.listdir(path + key)
-                # 7. Move the file into that directory using shutil.move
-                shutil.move(file_, new_dir2)
+                    # 6. If the folder is not in the current directory already,
+                    # create the folder
+                else:
+                    os.mkdir(new_path)
+                    print(os.getcwd())
+                    # 7. Move the file into that directory using shutil.move
+                    shutil.move(os.path.join(path,file_), new_path)
         # 8. Else, continue to the next iteration
         else:
             continue
