@@ -1,3 +1,3 @@
 import shutil
 
-shutil.move("//Users//sadhanakumar//Downloads//file-organizer", "//Users//sadhanakumar//github//adv-py")
+shutil.move("//Users//sadhanakumar//Downloads//rock-paper-scissors", "//Users//sadhanakumar//github//adv-py")
