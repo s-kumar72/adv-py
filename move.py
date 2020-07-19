@@ -1,3 +1,6 @@
+# a file to move starter code to this repo
+
+
 import shutil
 
-shutil.move("//Users//sadhanakumar//Downloads//rock-paper-scissors", "//Users//sadhanakumar//github//adv-py")
+shutil.move("//Users//sadhanakumar//Downloads//snake-game", "//Users//sadhanakumar//github//adv-py")
