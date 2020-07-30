@@ -2,6 +2,16 @@ import pygame
 import time
 import random
 
+global y1, y2, x1, x2, x1_change, y1_change
+
+x1 = 300
+y1 = 200
+
+x1_change = 0
+y1_change = 0
+
+x2 = x1 + x1_change
+y2 = y1+ y1_change
 # Initalizes pygame
 pygame.init()
 
@@ -55,15 +65,25 @@ def gameLoop():
     # START CODING HERE
 
     # 1. Set x1 and y1 (the position of the block) to the center of the screen
-
+    x1 = 300
+    y1 = 200
     # 2. Set x1_change and y1_change to 0 since the snake isn't moving yet
-
+    x1_change = 0
+    y1_change = 0
     # A list that will change as the snake gets bigger
     snake_List = []
     # Sets the initial length of the snake to 1
     snake_length = 1
 
     #Position the food (foodx, foody) to a random location using random module
+    foodx = 16
+    foody = 16
+
+    food = pygame.draw.rect(foodx, foody, 5, 5)
+
+    def food_position():
+        foodx = random.randint(0, 600)
+        foody = random.randint(0, 400)
 
     #While the game is not over
     while not game_over:
@@ -87,28 +107,46 @@ def gameLoop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_over = True
-
             # If the user presses an arrow key
             if event.type == pygame.KEYDOWN:
-
                 # 3. Create if-statements that determine how the position of the snake
                 #   changes depending on which arrow key is pressed
                 #   Hint: Change the variables x1_change and y1_change
-
+                if event.key == pygame.K_DOWN:
+                    y1_change = y1_change + 5
+                if event.key == pygame.K_UP:
+                    y1_change = y1_change - 5
+                if event.key == pygame.K_LEFT:
+                    x1_change = x1_change - 5
+                if event.key == pygame.K_RIGHT:
+                    x1_change = x1_change + 5
         # 4. Check if the position of x1 or y1 is outside of the display
-
+            if 0 > y1 + y1_change:
+                y2 = 0
+            if dis_height < y1 + y1_change:
+                y2 = dis_height
+            if 0 > x1 + x1_change:
+                x2 = 0
+            if dis_width < x1 + x1_change:
+                x2 = dis_width
         # 5. Add the change of the position to the position
+            #x2 = x1 + x1_change
+            #y2 = y1+ y1_change
 
         dis.fill(blue)
         pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
 
         # 6. Create an empty list for the current position of the snake
+        snake_current_position: []
 
         # 7. Append the current position of the snake to the list
         #    Hint: You're creating a list with the length of two where
         #          [0] is x and [1] is y
+        snake_current_position.append(x2)
+        snake_current_position.append(y2)
 
         # 8. Add the new list you just created to snake_List
+        snake_List = snake_List + snake_current_position
 
         # 9. If the length of snake_List is bigger than the snake_length,
         #   delete the first index of snake_List
@@ -116,9 +154,17 @@ def gameLoop():
         #       lists of positions on the display that your snake is occupying.
         #       So you're deleting positions your snake has moved off of
         #       (which would be the oldest entry)
+        if len(snake_List) > snake_length:
+            del snake_List[0]
+            del snake_List[1]
+        else:
+            pass
 
         # 10. Check if any part of your snake is touching any other part of your snake
         #   If so, end the game
+
+        if snake_block.colliderect(snake_block):
+            game_close = True
 
         our_snake(snake_block, snake_List)
         Your_score(snake_length - 1)
@@ -128,6 +174,9 @@ def gameLoop():
         # 11. Check if the position of the snake's head matches the position of the food
         #   If so, randomly generate a new food item
         #   And increase the length of the snake by 1
+        if snake_block.colliderect(food):
+            food_position()
+            snake_length = snake_length + 1
 
         clock.tick(snake_speed)
 
