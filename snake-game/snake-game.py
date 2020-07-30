@@ -2,7 +2,7 @@ import pygame
 import time
 import random
 
-global y1, y2, x1, x2, x1_change, y1_change
+global y1, y2, x1, x2, x1_change, y1_change, snake
 
 
 
@@ -53,7 +53,7 @@ def Your_score(score):
 def our_snake(snake_block, snake_list):
     global snake
     for x in snake_list:
-        snake = pygame.draw.Rect(dis, black, [x[0], x[1], snake_block, snake_block])
+        snake = pygame.draw.rect(dis, black, [x[0], x[1], snake_block, snake_block])
 
 # A function to display messages
 def message(msg, color):
@@ -73,16 +73,18 @@ def gameLoop():
     # 2. Set x1_change and y1_change to 0 since the snake isn't moving yet
     x1_change = 0
     y1_change = 0
+    snake_initial_position = [x1,y1]
     # A list that will change as the snake gets bigger
     snake_List = []
+    snake_List.append(snake_initial_position)
     # Sets the initial length of the snake to 1
     snake_length = 1
-
+    # our_snake(snake_block, snake_List)
     #Position the food (foodx, foody) to a random location using random module
     foodx = 16
     foody = 16
 
-    food = pygame.draw.Rect(dis, white, [foodx, foody, 5, 5])
+    food = pygame.draw.rect(dis, white, [foodx, foody, 5, 5])
 
     def food_position():
         foodx = random.randint(0, 600)
@@ -137,7 +139,7 @@ def gameLoop():
             y2 = y1+ y1_change
 
         dis.fill(blue)
-        pygame.draw.Rect(dis, green, [foodx, foody, snake_block, snake_block])
+        pygame.draw.rect(dis, green, [foodx, foody, snake_block, snake_block])
 
         # 6. Create an empty list for the current position of the snake
         snake_current_position = []
@@ -149,7 +151,7 @@ def gameLoop():
         snake_current_position.append(y2)
 
         # 8. Add the new list you just created to snake_List
-        snake_List = snake_List + snake_current_position
+        snake_List.append(snake_current_position)
 
         # 9. If the length of snake_List is bigger than the snake_length,
         #   delete the first index of snake_List
@@ -159,22 +161,21 @@ def gameLoop():
         #       (which would be the oldest entry)
         if len(snake_List) > snake_length:
             del snake_List[0]
-            if len(snake_List) > 2:
-                del snake_List[1]
-        else:
-            pass
 
         # 10. Check if any part of your snake is touching any other part of your snake
         #   If so, end the game
         #collide_rect1 = [snake]
-        if snake.colliderect(snake) == True:
+
+        current_coordinates = [x2, y2]
+        if current_coordinates in snake_List:
             game_close = True
 
         our_snake(snake_block, snake_List)
         Your_score(snake_length - 1)
-
+        
         pygame.display.update()
 
+        print(snake)
         # 11. Check if the position of the snake's head matches the position of the food
         #   If so, randomly generate a new food item
         #   And increase the length of the snake by 1
