@@ -1,18 +1,14 @@
+apple = "a"
+ball = "b"
+cat = "c"
+dog = "d"
+elephant = "e"
 
-import tkinter as tk
+list = [apple, ball, cat]
+list.append(dog)
+list.append(elephant)
 
-window = tk.Tk()
+list_1 = ["apple", "ball"]
+list_1 = list_1 + list
 
-frame_a = tk.Frame()
-frame_b = tk.Frame()
-
-label_a = tk.Label(master=frame_a, text="I'm in Frame A")
-label_a.pack()
-
-label_b = tk.Label(master=frame_b, text="I'm in Frame B")
-label_b.pack()
-
-frame_a.pack()
-frame_b.pack()
-
-window.mainloop()
+print (list_1) #should print ["apple", "ball", "a", "b", "c", "d", "e"]
