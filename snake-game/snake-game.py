@@ -166,13 +166,14 @@ def gameLoop():
         #   If so, end the game
         #collide_rect1 = [snake]
 
-        current_coordinates = [x2, y2]
-        if current_coordinates in snake_List:
+        if snake_List[-1] in snake_List[0:-1]:
             game_close = True
+
+
 
         our_snake(snake_block, snake_List)
         Your_score(snake_length - 1)
-        
+
         pygame.display.update()
 
         print(snake)
